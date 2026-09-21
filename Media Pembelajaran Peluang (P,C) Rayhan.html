@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeluangMath - Permutasi & Kombinasi Interaktif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        .math-symbol {
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col md:flex-row">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col justify-between shadow-xl z-20 md:min-h-screen">
+        <div>
+            <!-- Header Logo -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-calculator text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">PeluangMath</h1>
+                        <p class="text-xs text-indigo-300">Permutasi & Kombinasi</p>
+                    </div>
+                </div>
+                <!-- Mobile Toggle Button -->
+                <button id="mobileMenuBtn" class="md:hidden text-slate-400 hover:text-white focus:outline-none p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav id="sidebarNav" class="hidden md:block p-4 space-y-1.5 text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
+                    <i class="fa-solid fa-chart-pie w-5"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('sejarah')" id="nav-sejarah" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+                    <i class="fa-solid fa-book-bookmark w-5"></i>
+                    <span>Sejarah & Asal-Usul</span>
+                </button>
+                <button onclick="switchTab('rumus')" id="nav-rumus" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+                    <i class="fa-solid fa-square-root-variable w-5"></i>
+                    <span>Rumus & Kalkulator</span>
+                </button>
+                <button onclick="switchTab('kuis-center')" id="nav-kuis-center" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+                    <i class="fa-solid fa-gamepad w-5"></i>
+                    <span>Pusat Kuis & Latihan</span>
+                </button>
+                <button onclick="switchTab('quotes')" id="nav-quotes" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+                    <i class="fa-solid fa-quote-left w-5"></i>
+                    <span>Motivasi & Quotes</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Info / User Profile Badge -->
+        <div class="hidden md:block p-4 border-t border-slate-800">
+            <div onclick="openProfileModal()" class="bg-slate-800/80 hover:bg-slate-800 cursor-pointer p-3 rounded-xl border border-slate-700/60 flex items-center justify-between transition group">
+                <div class="flex items-center space-x-3 overflow-hidden">
+                    <div id="sidebarUserAvatar" class="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p id="sidebarUserName" class="text-xs font-semibold text-slate-100 truncate">Siswa Pelajar</p>
+                        <p id="sidebarUserStatus" class="text-[10px] text-indigo-400 font-medium truncate">Klik untuk Login/Edit</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-user-pen text-slate-500 group-hover:text-indigo-400 text-xs transition"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto max-h-screen custom-scrollbar p-4 md:p-8">
+        <div class="max-w-6xl mx-auto space-y-8">
+
+            <!-- SECTION 1: DASHBOARD -->
+            <section id="section-dashboard" class="tab-content block space-y-6">
+                <!-- Welcome Banner -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 p-8 text-white shadow-xl">
+                    <div class="relative z-10 max-w-2xl space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 bg-indigo-500/30 text-indigo-200 text-xs font-semibold rounded-full border border-indigo-400/30 backdrop-blur-md">
+                                <i class="fa-solid fa-sparkles mr-1"></i> Ruang Belajar Interaktif
+                            </span>
+                            <span id="userOnlineBadge" class="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 text-[11px] font-medium rounded-full border border-emerald-500/30">
+                                <i class="fa-solid fa-circle text-[8px] mr-1 text-emerald-400"></i> Akun Aktif
+                            </span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+                            Selamat Datang, <span id="dashWelcomeName" class="text-indigo-300">Siswa Pelajar</span>!
+                        </h2>
+                        <p class="text-indigo-200 text-sm md:text-base leading-relaxed">
+                            Pahami latar belakang sejarah, asal-usul penurunan rumus, kalkulator faktorial otomatis, serta latihan kuis dengan mode Standar atau Guided Step-by-Step.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="switchTab('kuis-center')" class="px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition duration-200 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <span>Pilih Mode Kuis</span>
+                            </button>
+                            <button onclick="openProfileModal()" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl backdrop-blur-md border border-white/20 transition duration-200 text-sm flex items-center space-x-2">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>Atur Profil Akun</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Learning Progress Widget -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Skor Tertinggi</p>
+                            <p id="statHighScore" class="text-2xl font-black text-slate-800">0 Poin</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Kuis Selesai</p>
+                            <p id="statQuizCount" class="text-2xl font-black text-slate-800">0 Kali</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xl">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Total Akumulasi Skor</p>
+                            <p id="statTotalPoints" class="text-2xl font-black text-slate-800">0 Poin</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Quote Card -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex items-start space-x-4">
+                    <div class="p-3 bg-amber-50 text-amber-600 rounded-xl flex-shrink-0">
+                        <i class="fa-solid fa-quote-left text-2xl"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-slate-700 italic font-medium text-sm md:text-base">
+                            "Matematika adalah seni memberikan nama yang sama untuk hal-hal yang berbeda."
+                        </p>
+                        <p class="text-xs text-slate-500 font-semibold">— Henri Poincaré</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Quick Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div onclick="switchTab('sejarah')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 group">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-blue-600 group-hover:text-white transition duration-200">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Sejarah Tokoh</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed">Blaise Pascal, Pierre de Fermat, dan penemuan awal teori kombinatorik.</p>
+                    </div>
+
+                    <div onclick="switchTab('sejarah')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-emerald-600 group-hover:text-white transition duration-200">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Asal-Usul Rumus</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed">Penurunan rumus faktorial n!, permutasi P(n,r), dan eliminasi duplikasi pada C(n,r).</p>
+                    </div>
+
+                    <div onclick="switchTab('rumus')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 group">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-purple-600 group-hover:text-white transition duration-200">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Kalkulator Faktorial</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed">Hitung nilai P(n,r) & C(n,r) otomatis beserta jabaran rinci faktorialnya.</p>
+                    </div>
+
+                    <div onclick="switchTab('kuis-center')" class="cursor-pointer bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 group">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-lg mb-1">Dashboard Kuis</h3>
+                        <p class="text-slate-500 text-xs leading-relaxed">Pilih Mode Standar (Pilihan Ganda) atau Mode Step-by-Step (Bimbingan Bertahap).</p>
+                    </div>
+                </div>
+
+                <!-- Core Concept Comparison Banner -->
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-2xl border border-indigo-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <span class="px-2.5 py-0.5 bg-indigo-200/60 text-indigo-800 text-[11px] font-bold rounded-md">KUNCI KONSEP</span>
+                        <h3 class="font-extrabold text-slate-800 text-xl">Perbedaan Utama: Permutasi vs Kombinasi</h3>
+                        <p class="text-slate-600 text-sm max-w-2xl">
+                            • <strong>Permutasi</strong>: Memperhatikan URUTAN. (Contoh: Juara 1 & 2, Kata Sandi, Posisi Jabatan).<br>
+                            • <strong>Kombinasi</strong>: TIDAK memperhatikan urutan. (Contoh: Memilih tim, Mengambil bola, Salaman).
+                        </p>
+                    </div>
+                    <button onclick="switchTab('rumus')" class="whitespace-nowrap px-4 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-semibold hover:bg-slate-800 transition">
+                        Lihat Formulasinya <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SEJARAH & ASAL-USUL -->
+            <section id="section-sejarah" class="tab-content hidden space-y-8">
+                <div class="space-y-2">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Sejarah & Asal-Usul Permutasi dan Kombinasi</h2>
+                    <p class="text-slate-500 text-sm md:text-base">Dari gagasan menghitung susunan pada India kuno, perkembangan kombinatorik dalam dunia Islam, hingga bentuk rumus yang dipakai sekarang.</p>
+                </div>
+
+                <!-- Timeline Sejarah -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-timeline"></i></div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-900">Jejak Sejarah Kombinatorik</h3>
+                            <p class="text-xs text-slate-500">Catatan sejarah disusun berdasarkan sumber sejarah matematika yang tersedia.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="relative pl-8 border-l-2 border-indigo-100">
+                            <span class="absolute -left-3 top-0 w-5 h-5 rounded-full bg-indigo-600 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800">± abad ke-3 SM — Piṅgala dan tradisi India</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mt-1">Dalam <em>Chandaḥsūtra</em>, Piṅgala membahas cara menghitung pola susunan suku pendek dan panjang dalam metrum Sanskerta. Ini merupakan salah satu akar awal pemikiran kombinatorik.</p>
+                        </div>
+                        <div class="relative pl-8 border-l-2 border-indigo-100">
+                            <span class="absolute -left-3 top-0 w-5 h-5 rounded-full bg-emerald-600 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800">Abad ke-9 — Mahāvīra</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mt-1">Mahāvīra memberikan aturan umum untuk kombinasi dalam <em>Gaṇita Sāra Saṅgraha</em>. Tradisi India menunjukkan bahwa gagasan menghitung susunan dan pilihan sudah berkembang jauh sebelum istilah modern “permutasi” dan “kombinasi”.</p>
+                        </div>
+                        <div class="relative pl-8 border-l-2 border-indigo-100">
+                            <span class="absolute -left-3 top-0 w-5 h-5 rounded-full bg-purple-600 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800">Abad ke-10–13 — Dunia Islam</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mt-1"><strong>Al-Karaji</strong> diketahui telah mengenal aturan kombinasi. Pada awal abad ke-13, <strong>Aḥmad al-Abʿdari ibn Munʿim</strong> membahas perhitungan kombinasi secara sistematis. Kemudian <strong>Ibn al-Bannā al-Marrākushī</strong> mengembangkan aturan perkalian pada entri kombinasi dan memberikan pembuktian/penurunan yang lebih umum.</p>
+                        </div>
+                        <div class="relative pl-8 border-l-2 border-indigo-100">
+                            <span class="absolute -left-3 top-0 w-5 h-5 rounded-full bg-amber-500 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800">Abad ke-17 — Pascal, Fermat, dan teori peluang</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mt-1">Permasalahan peluang mendorong perkembangan kombinatorik di Eropa. Pascal dan Fermat terkenal melalui korespondensi mereka pada 1654 mengenai masalah peluang. Segitiga Pascal juga menjadi cara penting untuk merepresentasikan koefisien binomial.</p>
+                        </div>
+                        <div class="relative pl-8">
+                            <span class="absolute -left-3 top-0 w-5 h-5 rounded-full bg-rose-500 border-4 border-white"></span>
+                            <h4 class="font-bold text-slate-800">1713 — <em>Ars Conjectandi</em></h4>
+                            <p class="text-sm text-slate-600 leading-relaxed mt-1">Karya Jakob Bernoulli, diterbitkan secara anumerta pada 1713, menjadi salah satu karya penting yang merangkum dan mengembangkan teori kombinatorik serta peluang pada zamannya.</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 leading-relaxed">
+                        <strong>Catatan penting:</strong> sejarah permutasi dan kombinasi bukan kisah “satu orang menemukan semuanya”. Gagasan menghitung susunan dan pilihan berkembang lintas peradaban, kemudian diformalkan secara bertahap.
+                    </div>
+                </div>
+
+                <!-- Tokoh Islam -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-3">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-mosque"></i></div>
+                        <h3 class="font-bold text-lg text-slate-800">Al-Karaji</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Matematikawan Persia sekitar abad ke-10–11 yang diketahui telah menggunakan aturan kombinasi. Karyanya sendiri tidak seluruhnya bertahan, tetapi pengetahuannya dikenal melalui tradisi matematikawan setelahnya.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-3">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-scroll"></i></div>
+                        <h3 class="font-bold text-lg text-slate-800">Ibn al-Bannā</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Abū al-ʿAbbās Aḥmad ibn al-Bannā al-Marrākushī (1256–1321) mengembangkan aturan perkalian untuk bilangan kombinasi dan membantu menggeneralisasi gagasan permutasi serta kombinasi.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-3">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-square-root-variable"></i></div>
+                        <h3 class="font-bold text-lg text-slate-800">Al-Khwarizmi</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Walaupun bukan tokoh utama dalam sejarah permutasi-kombinasi, al-Khwarizmi sangat penting dalam sejarah matematika karena karya aljabarnya melahirkan istilah <em>algebra</em> dan namanya menjadi asal kata <em>algorithm</em>.</p>
+                    </div>
+                </div>
+
+                <!-- Penurunan Rumus Lengkap -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-sm space-y-8">
+                    <div>
+                        <h3 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-square-root-variable text-indigo-600 mr-2"></i>Penurunan Rumus — dari Logika sampai Bentuk Faktorial</h3>
+                        <p class="text-sm text-slate-500 mt-1">Jangan hanya menghafal rumus. Lihat mengapa setiap faktor muncul.</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-indigo-600">1. Faktorial n!</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">Faktorial menyatakan hasil perkalian semua bilangan bulat positif dari n turun sampai 1.</p>
+                        <div class="p-4 bg-indigo-50 rounded-xl font-mono text-sm text-indigo-900">
+                            n! = n × (n−1) × (n−2) × ... × 2 × 1
+                            <br>Contoh: 5! = 5 × 4 × 3 × 2 × 1 = 120
+                            <br>Secara khusus: 0! = 1
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-100">
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-indigo-600">2. Permutasi unsur berbeda P(n,r)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">Misalkan tersedia n objek berbeda dan kita mengisi r tempat secara berurutan. Tempat pertama punya n pilihan, tempat kedua tinggal n−1 pilihan, dan seterusnya.</p>
+                        <div class="p-4 bg-slate-50 rounded-xl font-mono text-sm text-slate-700 leading-7">
+                            Banyak cara = n × (n−1) × (n−2) × ... × (n−r+1)
+                            <br>= [n × (n−1) × ... × (n−r+1)] × [(n−r)!/(n−r)!]
+                            <br>= n!/(n−r)!
+                        </div>
+                        <div class="p-4 bg-indigo-50 rounded-xl text-center font-bold text-indigo-900 text-lg">P(n,r) = n! / (n−r)!</div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-purple-600">3. Kombinasi C(n,r)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">Permutasi menganggap AB dan BA berbeda. Kombinasi tidak. Setiap kelompok berisi r objek dapat diurutkan sebanyak r! cara, sehingga satu kelompok pada kombinasi muncul r! kali dalam hitungan permutasi.</p>
+                        <div class="p-4 bg-slate-50 rounded-xl font-mono text-sm text-slate-700 leading-7">
+                            C(n,r) = P(n,r)/r!
+                            <br>= [n!/(n−r)!]/r!
+                            <br>= n!/[r!(n−r)!]
+                        </div>
+                        <div class="p-4 bg-purple-50 rounded-xl text-center font-bold text-purple-900 text-lg">C(n,r) = n! / [r!(n−r)!]</div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-emerald-600">4. Permutasi dengan unsur sama</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">Jika n objek disusun seluruhnya tetapi terdapat k₁ objek yang identik, k₂ objek identik, dan seterusnya, maka susunan yang hanya berbeda karena pertukaran objek identik tidak boleh dihitung berulang.</p>
+                        <div class="p-4 bg-slate-50 rounded-xl font-mono text-sm text-slate-700 leading-7">
+                            Semua dianggap berbeda terlebih dahulu: n!
+                            <br>Setiap kelompok identik menyebabkan pengulangan sebanyak k₁!, k₂!, ..., kₘ!
+                            <br>Maka: P = n! / (k₁! × k₂! × ... × kₘ!)
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl text-center font-bold text-emerald-900 text-lg">P = n! / (k₁! k₂! ... kₘ!)</div>
+                        <p class="text-xs text-slate-500">Contoh: kata <strong>MATEMATIKA</strong> memiliki beberapa huruf yang berulang, sehingga tidak cukup menggunakan 10! karena susunan yang sama akan terhitung berkali-kali.</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-amber-600">5. Permutasi siklis</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">Pada susunan melingkar, susunan yang hanya berbeda karena seluruh kelompok diputar dianggap sama. Karena satu susunan linear memiliki n posisi rotasi yang ekuivalen, jumlah susunan dibagi n.</p>
+                        <div class="p-4 bg-slate-50 rounded-xl font-mono text-sm text-slate-700 leading-7">
+                            Susunan linear = n!
+                            <br>Karena n rotasi dianggap sama:
+                            <br>Pₛ = n!/n = (n−1)!
+                        </div>
+                        <div class="p-4 bg-amber-50 rounded-xl text-center font-bold text-amber-900 text-lg">Pₛ = (n−1)!</div>
+                        <p class="text-xs text-slate-500">Catatan: rumus ini untuk susunan melingkar biasa ketika rotasi dianggap sama dan tidak ada syarat tambahan.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-lg">
+                    <h3 class="font-bold text-lg mb-3"><i class="fa-solid fa-book-open mr-2 text-indigo-300"></i>Rujukan Sejarah</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">Perkembangan kombinatorik dibahas dalam literatur sejarah matematika yang mencatat kontribusi India, dunia Islam, dan Eropa. Sumber utama pengembangan materi ini antara lain kajian Robin Wilson dan sumber sejarah matematika MacTutor.</p>
+                    <p class="text-xs text-slate-400 mt-3">Sumber web: MacTutor History of Mathematics; International Congress of Mathematicians 2026; Oxford Academic; OpenStax.</p>
+                </div>
+            </section>
+
+            <!-- SECTION 3: RUMUS & KALKULATOR -->
+            <section id="section-rumus" class="tab-content hidden space-y-8">
+                <div class="space-y-2">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Rumus Clean & Kalkulator Faktorial</h2>
+                    <p class="text-slate-500 text-sm md:text-base">Kumpulan formulasi matematika dengan tampilan bersih dan kalkulator langkah faktorial otomatis.</p>
+                </div>
+
+                <!-- Formulasi Card Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Permutasi Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-indigo-100 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold">URUTAN PENTING</span>
+                            <i class="fa-solid fa-arrow-down-short-wide text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Permutasi Unsur Berbeda</h3>
+                        <div class="bg-slate-900 text-white p-5 rounded-xl text-center my-2 text-lg font-bold">
+                            <sub>n</sub>P<sub>r</sub> = P(n, r) = <span class="inline-block text-center align-middle mx-1"><span class="block border-b border-white px-2">n!</span><span class="block px-2">(n - r)!</span></span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Keterangan: <span class="font-semibold">n</span> = total objek tersedia, <span class="font-semibold">r</span> = jumlah objek yang dipilih.
+                        </p>
+                    </div>
+
+                    <!-- Kombinasi Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-purple-100 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold">URUTAN BEBAS</span>
+                            <i class="fa-solid fa-layer-group text-purple-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Kombinasi Unsur Berbeda</h3>
+                        <div class="bg-slate-900 text-white p-5 rounded-xl text-center my-2 text-lg font-bold">
+                            <sub>n</sub>C<sub>r</sub> = C(n, r) = <span class="inline-block text-center align-middle mx-1"><span class="block border-b border-white px-2">n!</span><span class="block px-2">r! × (n - r)!</span></span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Keterangan: Memilih <span class="font-semibold">r</span> objek dari <span class="font-semibold">n</span> objek tanpa membedakan posisi/urutan.
+                        </p>
+                    </div>
+
+                    <!-- Permutasi Siklis Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold">MELINGKAR</span>
+                            <i class="fa-solid fa-arrows-spin text-emerald-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Permutasi Siklis (Melingkar)</h3>
+                        <div class="bg-slate-900 text-white p-5 rounded-xl text-center my-2 text-lg font-bold">
+                            P<sub>siklis</sub> = (n - 1)!
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Digunakan untuk susunan objek yang melingkar (seperti duduk di meja bundar atau merangkai manik-manik).
+                        </p>
+                    </div>
+
+                    <!-- Permutasi Unsur Sama Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-amber-100 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold">ADA UNSUR SAMA</span>
+                            <i class="fa-solid fa-clone text-amber-400"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Permutasi Unsur Sama</h3>
+                        <div class="bg-slate-900 text-white p-5 rounded-xl text-center my-2 text-lg font-bold">
+                            P = <span class="inline-block text-center align-middle mx-1"><span class="block border-b border-white px-2">n!</span><span class="block px-2">k<sub>1</sub>! × k<sub>2</sub>! × ... × k<sub>m</sub>!</span></span>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Digunakan saat menyusun kata/huruf yang memiliki beberapa huruf kembar (<span class="font-semibold">k<sub>1</sub>, k<sub>2</sub></span>, dst.).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Kalkulator Interaktif -->
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-md space-y-6">
+                    <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Kalkulator Faktorial & Hitung Otomatis</h3>
+                            <p class="text-xs text-slate-500">Masukkan nilai n dan r untuk melihat kalkulasi faktorial bertahap</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tipe Perhitungan</label>
+                            <select id="calcType" onchange="updateCalculatorInputs()" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
+                                <option value="permutation">Permutasi Unsur Berbeda P(n, r)</option>
+                                <option value="combination">Kombinasi C(n, r)</option>
+                                <option value="repeated">Permutasi Unsur Sama</option>
+                                <option value="cyclic">Permutasi Siklis</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="calcNLabel" class="block text-xs font-bold text-slate-700 mb-1">Nilai n (Total Objek)</label>
+                            <input type="number" id="calcN" value="6" min="0" max="50" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                        </div>
+                        <div id="calcRWrap">
+                            <label id="calcRLabel" class="block text-xs font-bold text-slate-700 mb-1">Nilai r (Objek Dipilih)</label>
+                            <input type="number" id="calcR" value="3" min="0" max="50" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                        </div>
+                        <div id="calcRepeatWrap" class="md:col-span-3 hidden">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Jumlah setiap kelompok unsur yang sama (contoh: 3,2,2,1)</label>
+                            <input type="text" id="calcRepeatCounts" value="2,2" placeholder="Pisahkan dengan koma, misalnya 3,2,2,1" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                            <p class="text-[11px] text-slate-500 mt-1">Jumlah semua kelompok harus sama dengan n.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateMat()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition duration-200 text-sm">
+                        Hitung Sekarang
+                    </button>
+
+                    <!-- Calculator Output -->
+                    <div id="calcResultContainer" class="hidden space-y-4 p-5 bg-slate-50 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Hasil Akhir</span>
+                            <span id="calcResultBadge" class="text-2xl font-black text-indigo-600">0</span>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-xs font-bold text-slate-700">Penjabaran Langkah Faktorial:</p>
+                            <div id="calcSteps" class="font-mono text-xs text-slate-700 bg-white p-4 rounded-lg border border-slate-200 overflow-x-auto space-y-1.5">
+                                <!-- Steps populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PUSAT KUIS (DASHBOARD KUIS TERPISAH) -->
+            <section id="section-kuis-center" class="tab-content hidden space-y-8">
+                <!-- Header -->
+                <div class="space-y-2">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Pusat Kuis & Latihan Soal</h2>
+                    <p class="text-slate-500 text-sm md:text-base">Pilih jenis metode latihan yang ingin kamu selesaikan. Kuis kini memiliki variasi Pilihan Ganda, MCMA, Benar/Salah, soal cerita, aplikasi, dan analisis.</p>
+                </div>
+
+                <!-- Sub-nav Tabs Inside Quiz Center -->
+                <div class="flex flex-wrap gap-3 border-b border-slate-200 pb-4">
+                    <button onclick="switchQuizMode('selection')" id="subnav-quiz-select" class="subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
+                        <i class="fa-solid fa-shapes mr-2"></i>Pilih Mode Kuis
+                    </button>
+                    <button onclick="switchQuizMode('standard')" id="subnav-quiz-standard" class="subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                        <i class="fa-solid fa-list-check mr-2"></i>Kuis Standar (Langsung)
+                    </button>
+                    <button onclick="switchQuizMode('guided')" id="subnav-quiz-guided" class="subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                        <i class="fa-solid fa-route mr-2"></i>Kuis Step-by-Step
+                    </button>
+                    <button onclick="switchQuizMode('leaderboard')" id="subnav-quiz-leaderboard" class="subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300">
+                        <i class="fa-solid fa-ranking-star mr-2 text-amber-500"></i>Papan Peringkat
+                    </button>
+                </div>
+
+                <!-- SUBVIEW 1: MODE SELECTION CARDS -->
+                <div id="quiz-subview-selection" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Mode 1 Card: Kuis Standar -->
+                        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-lg transition duration-300 space-y-6 flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-2xl">
+                                    <i class="fa-solid fa-bolt"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100">MODE 1</span>
+                                <h3 class="text-2xl font-black text-slate-800">Kuis Standar (Langsung)</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Latihan adaptif dengan berbagai bentuk soal: pilihan ganda, MCMA (jawaban lebih dari satu), Benar/Salah, soal cerita, aplikasi kehidupan nyata, dan soal analisis. Materi meliputi Permutasi, Kombinasi, Permutasi Siklis, Unsur Sama, serta Peluang.
+                                </p>
+                            </div>
+                            <button onclick="switchQuizMode('standard')" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition text-sm flex items-center justify-center space-x-2">
+                                <span>Mulai Kuis Standar</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Mode 2 Card: Kuis Step-by-Step -->
+                        <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-lg transition duration-300 space-y-6 flex flex-col justify-between">
+                            <div class="space-y-4">
+                                <div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-2xl">
+                                    <i class="fa-solid fa-route"></i>
+                                </div>
+                                <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-bold border border-purple-100">MODE 2</span>
+                                <h3 class="text-2xl font-black text-slate-800">Kuis Step-by-Step (Guided)</h3>
+                                <p class="text-slate-600 text-sm leading-relaxed">
+                                    Pembimbingan bertahap interaktif: 
+                                    (1) Identifikasi Jenis Konsep ➔ (2) Tentukan Variabel (n, r / n(A), n(S)) ➔ (3) Susun Formulasi ➔ (4) Hitung Hasil Akhir.
+                                </p>
+                            </div>
+                            <button onclick="switchQuizMode('guided')" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-600/30 transition text-sm flex items-center justify-center space-x-2">
+                                <span>Mulai Kuis Step-by-Step</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 2: KUIS STANDAR (LANGSUNG) -->
+                <div id="quiz-subview-standard" class="hidden space-y-6">
+                    <div id="stdQuizSetup" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-lg">Pengaturan Kuis Standar</h3>
+                        <div class="p-4 rounded-xl bg-indigo-50 border border-indigo-100 text-xs text-indigo-900 leading-relaxed">
+                            <strong>Variasi soal aktif:</strong> Pilihan Ganda, <strong>MCMA</strong> + Benar/Salah. Tingkat kesulitan tersedia dari <strong>C1–C6</strong>, termasuk soal cerita, aplikasi, pembatasan, analisis, dan strategi/HOTS. <strong>MCMA</strong> (pilih semua jawaban benar), <strong>Benar/Salah</strong>, soal cerita, aplikasi, dan analisis. Untuk MCMA, poin diberikan jika seluruh pilihan yang benar dipilih tanpa memilih opsi yang salah.
+                        </div>
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <label class="text-xs font-bold text-slate-700">Pilih Jumlah Soal:</label>
+                            <select id="stdQuestionCountSelect" class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                                <option value="5">5 Soal</option>
+                                <option value="10" selected>10 Soal</option>
+                                <option value="15">15 Soal</option>
+                                <option value="20">20 Soal</option>
+                                <option value="999">Tanpa Batas (Infinite)</option>
+                            </select>
+                            <label class="text-xs font-bold text-slate-700 sm:ml-2">Tingkat:</label>
+                            <select id="stdDifficultySelect" class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
+                                <option value="all" selected>Semua Tingkat</option>
+                                <option value="C1">C1 • Mengingat</option>
+                                <option value="C2">C2 • Memahami</option>
+                                <option value="C3">C3 • Menerapkan</option>
+                                <option value="C4">C4 • Menganalisis</option>
+                                <option value="C5">C5 • Mengevaluasi</option>
+                                <option value="C6">C6 • Mencipta/Strategi</option>
+                            </select>
+                            <button onclick="startStandardQuiz()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm shadow-md transition">
+                                <i class="fa-solid fa-play mr-2"></i>Mulai Sekarang
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="stdQuizActive" class="hidden space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span id="stdProgressBadge" class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold">Soal 1 dari 10</span>
+                                <h3 id="stdQuizTitle" class="text-lg font-bold text-slate-800 mt-1">Soal Pilihan Ganda</h3>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="text-right">
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">Skor Sementara</p>
+                                    <p id="stdScoreDisplay" class="text-lg font-black text-indigo-600">0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                            <div class="p-5 bg-slate-900 text-white rounded-xl shadow-md">
+                                <p id="stdQuestionText" class="text-sm md:text-base leading-relaxed font-medium"></p>
+                            </div>
+
+                            <div id="stdOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                            <div id="stdExplanationBox" class="hidden p-5 rounded-xl text-xs space-y-2 border"></div>
+
+                            <div class="flex justify-end border-t border-slate-100 pt-4">
+                                <button id="stdNextBtn" onclick="nextStandardQuestion()" class="hidden px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition">
+                                    Soal Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="stdQuizResult" class="hidden bg-white p-8 rounded-3xl border border-slate-200 shadow-lg text-center space-y-6">
+                        <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-black text-slate-800">Kuis Standar Selesai!</h3>
+                            <p class="text-slate-500 text-sm">Berikut adalah pencapaian hasil latihanmu:</p>
+                        </div>
+                        <div class="max-w-md mx-auto grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <div class="p-3">
+                                <p class="text-xs text-slate-400 font-bold uppercase">Total Soal</p>
+                                <p id="resTotalQ" class="text-2xl font-black text-slate-800">10</p>
+                            </div>
+                            <div class="p-3">
+                                <p class="text-xs text-slate-400 font-bold uppercase">Skor Akhir</p>
+                                <p id="resScore" class="text-2xl font-black text-indigo-600">100</p>
+                            </div>
+                        </div>
+                        <button onclick="resetStandardQuiz()" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition">
+                            Ulangi Kuis Standar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 3: KUIS STEP-BY-STEP (GUIDED PRACTICE) -->
+                <div id="quiz-subview-guided" class="hidden space-y-6">
+                    <div id="guidedQuizSetup" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-lg">Pengaturan Kuis Step-by-Step</h3>
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                            <label class="text-xs font-bold text-slate-700">Pilih Jumlah Soal:</label>
+                            <select id="guidedQuestionCountSelect" class="px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
+                                <option value="5">5 Soal</option>
+                                <option value="10" selected>10 Soal</option>
+                                <option value="15">15 Soal</option>
+                                <option value="20">20 Soal</option>
+                                <option value="999">Tanpa Batas (Infinite)</option>
+                            </select>
+                            <button onclick="startGuidedQuiz()" class="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-sm shadow-md transition">
+                                <i class="fa-solid fa-play mr-2"></i>Mulai Kuis Guided
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="guidedQuizActive" class="hidden space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span id="guidedProgressBadge" class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">Soal Guided 1 dari 10</span>
+                                <h3 class="text-lg font-bold text-slate-800 mt-1">Latihan Bimbingan Bertahap</h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Skor Guided</p>
+                                <p id="guidedScoreDisplay" class="text-lg font-black text-purple-600">0 Poin</p>
+                            </div>
+                        </div>
+
+                        <!-- Question Prompt -->
+                        <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-md space-y-2">
+                            <span class="px-2.5 py-0.5 bg-purple-500/30 text-purple-200 text-[11px] font-bold rounded-md">DESKRIPSI KASUS</span>
+                            <p id="guidedQuestionText" class="text-sm md:text-base leading-relaxed font-medium"></p>
+                        </div>
+
+                        <!-- Guided Step 1 Card -->
+                        <div id="guidedStep1Box" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-sm">1</span>
+                                <h4 class="font-bold text-slate-800 text-base">Tahap 1: Identifikasi Jenis Konsep</h4>
+                            </div>
+                            <p class="text-xs text-slate-500">Berdasarkan soal di atas, konsep mana yang paling tepat digunakan?</p>
+                            <div id="guidedStep1OptContainer" class="space-y-2"></div>
+                            <button id="guidedStep1Btn" onclick="checkGuidedStep1()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition">
+                                Verifikasi Tahap 1
+                            </button>
+                            <div id="guidedStep1Feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+                        </div>
+
+                        <!-- Guided Step 2 Card -->
+                        <div id="guidedStep2Box" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-sm">2</span>
+                                <h4 class="font-bold text-slate-800 text-base">Tahap 2: Menentukan Nilai Variabel</h4>
+                            </div>
+                            <p class="text-xs text-slate-500">Tentukan nilai variabel yang digunakan dalam perhitungan:</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label id="guidedStep2LabelN" class="block text-xs font-bold text-slate-700 mb-1">Nilai n (Total Objek):</label>
+                                    <input type="number" id="guidedStep2InputN" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label id="guidedStep2LabelR" class="block text-xs font-bold text-slate-700 mb-1">Nilai r (Objek Dipilih):</label>
+                                    <input type="number" id="guidedStep2InputR" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <button id="guidedStep2Btn" onclick="checkGuidedStep2()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition">
+                                Verifikasi Tahap 2
+                            </button>
+                            <div id="guidedStep2Feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+                        </div>
+
+                        <!-- Guided Step 3 Card -->
+                        <div id="guidedStep3Box" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-sm">3</span>
+                                <h4 class="font-bold text-slate-800 text-base">Tahap 3: Susunan Formulasi Matematika</h4>
+                            </div>
+                            <p class="text-xs text-slate-500">Pilih bentuk substitusi rumus faktorial yang paling tepat:</p>
+                            <div id="guidedStep3OptContainer" class="space-y-2"></div>
+                            <button id="guidedStep3Btn" onclick="checkGuidedStep3()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition">
+                                Verifikasi Tahap 3
+                            </button>
+                            <div id="guidedStep3Feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+                        </div>
+
+                        <!-- Guided Step 4 Card -->
+                        <div id="guidedStep4Box" class="hidden bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-sm">4</span>
+                                <h4 class="font-bold text-slate-800 text-base">Tahap 4: Hitung Hasil Akhir</h4>
+                            </div>
+                            <p class="text-xs text-slate-500">Hitung nilai numerik / pecahan dari persoalan tersebut:</p>
+                            <div>
+                                <input type="text" id="guidedStep4InputAns" placeholder="Masukkan nilai jawaban angka (atau pecahan misal 1/6)..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                            </div>
+                            <button id="guidedStep4Btn" onclick="checkGuidedStep4()" class="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition">
+                                Cek Hasil Akhir
+                            </button>
+                            <div id="guidedStep4Feedback" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+                        </div>
+
+                        <div id="guidedExplanationBox" class="hidden p-5 bg-indigo-50 border border-indigo-200 rounded-xl space-y-2 text-xs text-indigo-900"></div>
+
+                        <div class="flex justify-end border-t border-slate-100 pt-4">
+                            <button id="guidedNextBtn" onclick="nextGuidedQuestion()" class="hidden px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-sm transition">
+                                Soal Guided Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="guidedQuizResult" class="hidden bg-white p-8 rounded-3xl border border-slate-200 shadow-lg text-center space-y-6">
+                        <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-2xl font-black text-slate-800">Selesai Latihan Step-by-Step!</h3>
+                            <p class="text-slate-500 text-sm">Kamu telah menyelesaikan pembelajaran bertahap dengan sangat luar biasa.</p>
+                        </div>
+                        <div class="max-w-md mx-auto grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                            <div class="p-3">
+                                <p class="text-xs text-slate-400 font-bold uppercase">Total Soal</p>
+                                <p id="resGuidedTotalQ" class="text-2xl font-black text-slate-800">10</p>
+                            </div>
+                            <div class="p-3">
+                                <p class="text-xs text-slate-400 font-bold uppercase">Total Skor Guided</p>
+                                <p id="resGuidedScore" class="text-2xl font-black text-purple-600">100</p>
+                            </div>
+                        </div>
+                        <button onclick="resetGuidedQuiz()" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-purple-600/30 transition">
+                            Ulangi Kuis Guided
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUBVIEW 4: PAPAN PERINGKAT (LEADERBOARD) -->
+                <div id="quiz-subview-leaderboard" class="hidden space-y-6">
+                    <div class="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-2xl">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-slate-900">Papan Peringkat Siswa</h3>
+                                    <p class="text-xs text-slate-500">Peringkat real-time berdasarkan total akumulasi skor kuis</p>
+                                </div>
+                            </div>
+                            <button onclick="openProfileModal()" class="px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-bold rounded-xl border border-indigo-200 transition">
+                                <i class="fa-solid fa-user-pen mr-1"></i> Ubah Nama / Avatar Saya
+                            </button>
+                        </div>
+
+                        <!-- Leaderboard List Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-xs font-bold uppercase text-slate-500 rounded-xl">
+                                    <tr>
+                                        <th class="p-3.5 rounded-l-xl">Peringkat</th>
+                                        <th class="p-3.5">Nama Siswa</th>
+                                        <th class="p-3.5">Skor Tertinggi</th>
+                                        <th class="p-3.5 rounded-r-xl">Total Kuis</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaderboardTableBody" class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td colspan="4" class="p-6 text-center text-slate-400 text-xs">
+                                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>Memuat data peringkat cloud...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: MOTIVASI & QUOTES -->
+            <section id="section-quotes" class="tab-content hidden space-y-8">
+                <div class="space-y-2">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Motivasi, Hikmah & Quotes</h2>
+                    <p class="text-slate-500 text-sm md:text-base">Belajar matematika bukan hanya tentang mendapatkan jawaban, tetapi juga melatih ketelitian, kesabaran, dan keberanian menghadapi masalah.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white p-7 md:p-9 rounded-3xl shadow-xl">
+                    <span class="text-[11px] font-bold tracking-widest text-emerald-300">RENUNGAN BELAJAR</span>
+                    <h3 class="text-2xl md:text-3xl font-black mt-2 leading-tight">Ilmu tidak berhenti pada mengetahui; ia menjadi bernilai ketika dipahami dan digunakan dengan baik.</h3>
+                    <p class="text-sm text-slate-300 mt-4 leading-relaxed">Semangat ini sejalan dengan tradisi ilmiah dalam peradaban Islam: mencari pengetahuan, memahami persoalan, lalu menjadikannya berguna bagi kehidupan.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-calculator"></i></div>
+                            <div><h3 class="font-bold text-lg text-slate-800">Al-Khwarizmi</h3><p class="text-xs text-slate-500">Matematikawan abad ke-9</p></div>
+                        </div>
+                        <p class="text-slate-700 italic text-sm leading-relaxed">“...easiest and most useful in arithmetic.”</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Potongan terjemahan dari pengantar karya al-jabr wa al-muqabala. Gagasannya menekankan ilmu yang mudah dipahami dan berguna.</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold">Pesan untuk pelajar: jangan hanya mengejar hafalan rumus—pahami untuk apa rumus itu digunakan.</div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-eye"></i></div>
+                            <div><h3 class="font-bold text-lg text-slate-800">Ibn al-Haytham</h3><p class="text-xs text-slate-500">Ilmuwan abad ke-10–11</p></div>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed">Karya ilmiahnya mengajarkan teladan penting: sebuah persoalan perlu diamati, diuji, dan dianalisis dengan hati-hati sebelum kesimpulan diambil.</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold">Pesan untuk pelajar: kalau jawaban belum ketemu, jangan langsung menyerah—periksa langkahnya satu per satu.</div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-scroll"></i></div>
+                            <div><h3 class="font-bold text-lg text-slate-800">Ibn al-Bannā</h3><p class="text-xs text-slate-500">Matematikawan Maghrib, 1256–1321</p></div>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed">Ia mengembangkan penalaran kombinatorik secara lebih sistematis. Dari sini kita bisa belajar bahwa rumus yang tampak singkat biasanya lahir dari pola yang dapat dijelaskan.</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold">Pesan untuk pelajar: cari pola di balik rumus, bukan sekadar menghafal bentuk akhirnya.</div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-emerald-100 shadow-sm space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-book-open"></i></div>
+                            <div><h3 class="font-bold text-lg text-slate-800">Al-Bīrūnī</h3><p class="text-xs text-slate-500">Ilmuwan abad ke-11</p></div>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed">Al-Bīrūnī dikenal luas karena ketelitian dalam matematika, astronomi, dan kajian lintas budaya. Teladannya mengingatkan bahwa ilmu tumbuh melalui rasa ingin tahu dan ketelitian.</p>
+                        <div class="p-3 rounded-xl bg-emerald-50 text-emerald-900 text-xs font-semibold">Pesan untuk pelajar: boleh penasaran pada banyak hal, tetapi tetap teliti ketika memeriksa bukti dan perhitungan.</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="font-extrabold text-slate-900 text-xl mb-4">Quotes untuk menemani belajar</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                            <p class="italic text-sm text-slate-700">“Kesulitan bukan tanda bahwa kamu tidak mampu; ia adalah tanda bahwa ada sesuatu yang perlu dipahami lebih dalam.”</p>
+                            <p class="text-xs font-bold text-indigo-600 mt-3">— Renungan belajar</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                            <p class="italic text-sm text-slate-700">“Satu langkah yang dipahami dengan benar lebih berharga daripada sepuluh rumus yang hanya dihafal.”</p>
+                            <p class="text-xs font-bold text-indigo-600 mt-3">— Renungan belajar</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                            <p class="italic text-sm text-slate-700">“Belajar adalah perjalanan: salah hitung boleh, berhenti belajar jangan.”</p>
+                            <p class="text-xs font-bold text-indigo-600 mt-3">— Renungan belajar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-slate-500 leading-relaxed bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                    <strong>Catatan atribusi:</strong> kutipan Al-Khwarizmi di atas adalah potongan pendek dari terjemahan pengantar karyanya yang didokumentasikan dalam sumber sejarah matematika. Bagian “pesan untuk pelajar” lainnya merupakan rangkuman nilai keteladanan, bukan kutipan langsung tokoh.
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MODAL: USER PROFILE & LOGIN -->
+    <div id="userProfileModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 md:p-8 space-y-6 shadow-2xl border border-slate-100 animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Profil & Identitas Akun</h3>
+                        <p class="text-xs text-slate-500">Atur nama dan avatar kamu untuk tersimpan di Cloud</p>
+                    </div>
+                </div>
+                <button onclick="closeProfileModal()" class="text-slate-400 hover:text-slate-600 p-2 text-xl font-bold">
+                    &times;
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Nama Lengkap / Panggilan Siswa</label>
+                    <input type="text" id="modalInputName" placeholder="Masukkan nama kamu..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Avatar Unik</label>
+                    <div class="grid grid-cols-5 gap-2" id="avatarPickerGrid">
+                        <button onclick="selectAvatar('user-graduate')" class="avatar-opt p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50 text-indigo-600 text-xl text-center"><i class="fa-solid fa-user-graduate"></i></button>
+                        <button onclick="selectAvatar('brain')" class="avatar-opt p-3 rounded-xl border-2 border-slate-200 text-slate-600 text-xl text-center hover:bg-slate-50"><i class="fa-solid fa-brain"></i></button>
+                        <button onclick="selectAvatar('rocket')" class="avatar-opt p-3 rounded-xl border-2 border-slate-200 text-slate-600 text-xl text-center hover:bg-slate-50"><i class="fa-solid fa-rocket"></i></button>
+                        <button onclick="selectAvatar('robot')" class="avatar-opt p-3 rounded-xl border-2 border-slate-200 text-slate-600 text-xl text-center hover:bg-slate-50"><i class="fa-solid fa-robot"></i></button>
+                        <button onclick="selectAvatar('user-ninja')" class="avatar-opt p-3 rounded-xl border-2 border-slate-200 text-slate-600 text-xl text-center hover:bg-slate-50"><i class="fa-solid fa-user-ninja"></i></button>
+                    </div>
+                </div>
+
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 space-y-1 font-mono">
+                    <p><strong>Status Koneksi:</strong> <span class="text-emerald-600 font-bold">Tersambung ke Cloud</span></p>
+                    <p class="truncate"><strong>User ID:</strong> <span id="modalDisplayUid" class="text-slate-700">Memuat...</span></p>
+                </div>
+            </div>
+
+            <div class="flex space-x-3 pt-2">
+                <button onclick="closeProfileModal()" class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-sm transition">
+                    Batal
+                </button>
+                <button onclick="saveUserProfile()" class="w-1/2 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm shadow-md transition">
+                    Simpan Profil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Cloud Script Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'peluang-math-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "demo-key",
+            authDomain: "demo-app.firebaseapp.com",
+            projectId: "demo-app",
+            storageBucket: "demo-app.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:demo"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let selectedAvatarIcon = 'user-graduate';
+        let userStats = {
+            displayName: 'Siswa Pelajar',
+            avatar: 'user-graduate',
+            highScore: 0,
+            quizCount: 0,
+            totalPoints: 0
+        };
+
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Auth initialization fallback:", err);
+            }
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) return;
+            currentUser = user;
+            
+            const uidDisplay = document.getElementById('modalDisplayUid');
+            if (uidDisplay) uidDisplay.innerText = user.uid;
+
+            const userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'stats');
+            try {
+                const snap = await getDoc(userDocRef);
+                if (snap.exists()) {
+                    userStats = snap.data();
+                } else {
+                    userStats.displayName = user.displayName || 'Siswa ' + user.uid.substring(0, 4);
+                    await setDoc(userDocRef, userStats);
+                }
+            } catch (e) {
+                console.log("Using local user profile state");
+            }
+
+            updateUserInterface();
+            listenToLeaderboard();
+        });
+
+        function listenToLeaderboard() {
+            const leaderRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+            onSnapshot(leaderRef, (snapshot) => {
+                let leaders = [];
+                snapshot.forEach(d => leaders.push(d.data()));
+                leaders.sort((a, b) => (b.highScore || 0) - (a.highScore || 0));
+                renderLeaderboardTable(leaders);
+            }, (error) => {
+                console.warn("Leaderboard error callback:", error);
+            });
+        }
+
+        function renderLeaderboardTable(leaders) {
+            const tbody = document.getElementById('leaderboardTableBody');
+            if (!tbody) return;
+
+            if (leaders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs">Belum ada data kuis tersimpan. Jadilah yang pertama mengisi kuis!</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            leaders.forEach((item, index) => {
+                let rankBadge = `<span class="font-bold text-slate-500">${index + 1}</span>`;
+                if (index === 0) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-400 text-white font-black text-xs inline-flex items-center justify-center shadow-md">1</span>`;
+                if (index === 1) rankBadge = `<span class="w-6 h-6 rounded-full bg-slate-300 text-slate-800 font-black text-xs inline-flex items-center justify-center">2</span>`;
+                if (index === 2) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-600 text-white font-black text-xs inline-flex items-center justify-center">3</span>`;
+
+                html += `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="p-3.5 font-bold">${rankBadge}</td>
+                        <td class="p-3.5 flex items-center space-x-2">
+                            <div class="w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                                <i class="fa-solid fa-${item.avatar || 'user-graduate'}"></i>
+                            </div>
+                            <span class="font-bold text-slate-800">${item.displayName || 'Anonim'}</span>
+                        </td>
+                        <td class="p-3.5 font-black text-indigo-600">${item.highScore || 0} Poin</td>
+                        <td class="p-3.5 text-slate-500 text-xs">${item.quizCount || 0} Kuis</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        function updateUserInterface() {
+            const sidebarName = document.getElementById('sidebarUserName');
+            const dashName = document.getElementById('dashWelcomeName');
+            const avatarBox = document.getElementById('sidebarUserAvatar');
+            const modalInput = document.getElementById('modalInputName');
+
+            if (sidebarName) sidebarName.innerText = userStats.displayName;
+            if (dashName) dashName.innerText = userStats.displayName;
+            if (modalInput) modalInput.value = userStats.displayName;
+            if (avatarBox) {
+                avatarBox.innerHTML = `<i class="fa-solid fa-${userStats.avatar || 'user-graduate'}"></i>`;
+            }
+
+            document.getElementById('statHighScore').innerText = `${userStats.highScore || 0} Poin`;
+            document.getElementById('statQuizCount').innerText = `${userStats.quizCount || 0} Kali`;
+            document.getElementById('statTotalPoints').innerText = `${userStats.totalPoints || 0} Poin`;
+        }
+
+        window.openProfileModal = function() {
+            document.getElementById('userProfileModal').classList.remove('hidden');
+        };
+
+        window.closeProfileModal = function() {
+            document.getElementById('userProfileModal').classList.add('hidden');
+        };
+
+        window.selectAvatar = function(iconName) {
+            selectedAvatarIcon = iconName;
+            document.querySelectorAll('#avatarPickerGrid .avatar-opt').forEach(btn => {
+                btn.className = "avatar-opt p-3 rounded-xl border-2 border-slate-200 text-slate-600 text-xl text-center hover:bg-slate-50";
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.className = "avatar-opt p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50 text-indigo-600 text-xl text-center";
+            }
+        };
+
+        window.saveUserProfile = async function() {
+            const newName = document.getElementById('modalInputName').value.trim();
+            if (!newName) return;
+
+            userStats.displayName = newName;
+            userStats.avatar = selectedAvatarIcon;
+
+            updateUserInterface();
+            closeProfileModal();
+
+            if (currentUser) {
+                try {
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'stats');
+                    await setDoc(userDocRef, userStats, { merge: true });
+
+                    const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', currentUser.uid);
+                    await setDoc(leaderDocRef, {
+                        uid: currentUser.uid,
+                        displayName: userStats.displayName,
+                        avatar: userStats.avatar,
+                        highScore: userStats.highScore,
+                        quizCount: userStats.quizCount
+                    }, { merge: true });
+                } catch (err) {
+                    console.log("Profile updated locally");
+                }
+            }
+        };
+
+        window.recordQuizCompletion = async function(score) {
+            userStats.quizCount = (userStats.quizCount || 0) + 1;
+            userStats.totalPoints = (userStats.totalPoints || 0) + score;
+            if (score > (userStats.highScore || 0)) {
+                userStats.highScore = score;
+            }
+
+            updateUserInterface();
+
+            if (currentUser) {
+                try {
+                    const userDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'stats');
+                    await setDoc(userDocRef, userStats, { merge: true });
+
+                    const leaderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'leaderboard', currentUser.uid);
+                    await setDoc(leaderDocRef, {
+                        uid: currentUser.uid,
+                        displayName: userStats.displayName,
+                        avatar: userStats.avatar,
+                        highScore: userStats.highScore,
+                        quizCount: userStats.quizCount
+                    }, { merge: true });
+                } catch (e) {
+                    console.log("Stats updated locally");
+                }
+            }
+        };
+
+        initAuth();
+    </script>
+
+    <script>
+        // Setup Mobile Navigation Toggle
+        window.addEventListener('DOMContentLoaded', () => {
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const sidebarNav = document.getElementById('sidebarNav');
+            if (mobileBtn && sidebarNav) {
+                mobileBtn.addEventListener('click', () => {
+                    sidebarNav.classList.toggle('hidden');
+                });
+            }
+        });
+
+        // Main Navigation Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const activeTab = document.getElementById(`section-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.className = 'nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-slate-400 hover:bg-slate-800 hover:text-slate-200';
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = 'nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/30';
+            }
+
+            const sidebarNav = document.getElementById('sidebarNav');
+            if (window.innerWidth < 768 && sidebarNav) {
+                sidebarNav.classList.add('hidden');
+            }
+        }
+
+        // Quiz Mode Sub-view Switcher
+        function switchQuizMode(modeKey) {
+            document.querySelectorAll('#section-kuis-center [id^="quiz-subview-"]').forEach(el => el.classList.add('hidden'));
+            const targetView = document.getElementById(`quiz-subview-${modeKey}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            document.querySelectorAll('.subnav-btn').forEach(btn => {
+                btn.className = 'subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300';
+            });
+
+            const activeSubnav = document.getElementById(`subnav-quiz-${modeKey}`);
+            if (activeSubnav) {
+                activeSubnav.className = 'subnav-btn px-5 py-2.5 rounded-xl text-sm font-bold bg-indigo-600 text-white shadow-md shadow-indigo-600/30';
+            }
+        }
+
+        // Math Helpers
+        function factorial(num) {
+            if (num < 0) return 0;
+            if (num === 0 || num === 1) return 1;
+            let res = 1;
+            for (let i = 2; i <= num; i++) res *= i;
+            return res;
+        }
+
+        function permutation(n, r) {
+            if (n < r || n < 0 || r < 0) return 0;
+            return factorial(n) / factorial(n - r);
+        }
+
+        function combination(n, r) {
+            if (n < r || n < 0 || r < 0) return 0;
+            return factorial(n) / (factorial(r) * factorial(n - r));
+        }
+
+        // Interactive Calculator Engine
+        function updateCalculatorInputs() {
+            const type = document.getElementById('calcType').value;
+            const rWrap = document.getElementById('calcRWrap');
+            const repeatWrap = document.getElementById('calcRepeatWrap');
+            const nLabel = document.getElementById('calcNLabel');
+            const rLabel = document.getElementById('calcRLabel');
+
+            rWrap.classList.toggle('hidden', type === 'cyclic' || type === 'repeated');
+            repeatWrap.classList.toggle('hidden', type !== 'repeated');
+
+            if (type === 'cyclic') {
+                nLabel.innerText = 'Nilai n (Jumlah objek)';
+            } else if (type === 'repeated') {
+                nLabel.innerText = 'Nilai n (Total objek)';
+            } else {
+                nLabel.innerText = 'Nilai n (Total objek)';
+                rLabel.innerText = 'Nilai r (Objek dipilih)';
+            }
+        }
+
+        function parseRepeatCounts(raw) {
+            const counts = raw.split(',').map(x => parseInt(x.trim())).filter(x => Number.isFinite(x) && x > 0);
+            return counts;
+        }
+
+        function repeatedPermutation(counts) {
+            const n = counts.reduce((a,b) => a+b, 0);
+            let result = factorial(n);
+            for (const k of counts) result /= factorial(k);
+            return result;
+        }
+
+        function calculateMat() {
+            const type = document.getElementById('calcType').value;
+            const n = parseInt(document.getElementById('calcN').value);
+            const r = parseInt(document.getElementById('calcR').value);
+            const container = document.getElementById('calcResultContainer');
+            const resultBadge = document.getElementById('calcResultBadge');
+            const stepsDiv = document.getElementById('calcSteps');
+
+            if (isNaN(n) || n < 0) {
+                alert('Mohon masukkan nilai n yang valid.');
+                return;
+            }
+
+            if ((type === 'permutation' || type === 'combination') && (isNaN(r) || r < 0 || r > n)) {
+                alert('Pastikan r valid dan tidak lebih besar dari n.');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            stepsDiv.innerHTML = '';
+
+            if (type === 'permutation') {
+                const res = permutation(n, r);
+                resultBadge.innerText = res.toLocaleString('id-ID');
+                stepsDiv.innerHTML = `
+                    <p class="text-indigo-600 font-bold">Permutasi Unsur Berbeda</p>
+                    <p>Rumus: P(${n}, ${r}) = ${n}! / (${n}−${r})!</p>
+                    <p>• ${n}! = ${getFactorialExpansionStr(n)} = ${factorial(n).toLocaleString('id-ID')}</p>
+                    <p>• (${n}−${r})! = ${getFactorialExpansionStr(n-r)} = ${factorial(n-r).toLocaleString('id-ID')}</p>
+                    <p class="pt-2 text-emerald-600 font-bold">Hasil = ${res.toLocaleString('id-ID')}</p>`;
+            } else if (type === 'combination') {
+                const res = combination(n, r);
+                resultBadge.innerText = res.toLocaleString('id-ID');
+                stepsDiv.innerHTML = `
+                    <p class="text-purple-600 font-bold">Kombinasi</p>
+                    <p>Rumus: C(${n}, ${r}) = ${n}! / [${r}! × (${n}−${r})!]</p>
+                    <p>• ${n}! = ${getFactorialExpansionStr(n)} = ${factorial(n).toLocaleString('id-ID')}</p>
+                    <p>• ${r}! = ${getFactorialExpansionStr(r)} = ${factorial(r).toLocaleString('id-ID')}</p>
+                    <p>• (${n}−${r})! = ${getFactorialExpansionStr(n-r)} = ${factorial(n-r).toLocaleString('id-ID')}</p>
+                    <p class="pt-2 text-emerald-600 font-bold">Hasil = ${res.toLocaleString('id-ID')}</p>`;
+            } else if (type === 'repeated') {
+                const counts = parseRepeatCounts(document.getElementById('calcRepeatCounts').value);
+                const total = counts.reduce((a,b) => a+b, 0);
+                if (!counts.length || total !== n) {
+                    alert(`Jumlah kelompok harus sama dengan n = ${n}. Contoh: jika n=7, masukkan 3,2,1,1.`);
+                    return;
+                }
+                const res = repeatedPermutation(counts);
+                resultBadge.innerText = res.toLocaleString('id-ID');
+                const denominator = counts.map(k => `${k}!`).join(' × ');
+                const expandedDen = counts.map(k => `${getFactorialExpansionStr(k)}`).join(' × ');
+                stepsDiv.innerHTML = `
+                    <p class="text-emerald-600 font-bold">Permutasi Unsur Sama</p>
+                    <p>Kelompok identik: ${counts.join(', ')} → total ${n} unsur.</p>
+                    <p>Rumus: P = ${n}! / (${denominator})</p>
+                    <p>• Pembilang: ${getFactorialExpansionStr(n)} = ${factorial(n).toLocaleString('id-ID')}</p>
+                    <p>• Penyebut: ${expandedDen} = ${counts.map(k => factorial(k)).join(' × ')} = ${counts.reduce((a,b)=>a*b,1).toLocaleString('id-ID')}</p>
+                    <p class="pt-2 text-emerald-600 font-bold">Hasil = ${res.toLocaleString('id-ID')}</p>`;
+            } else if (type === 'cyclic') {
+                if (n < 1) {
+                    alert('Nilai n harus minimal 1.');
+                    return;
+                }
+                const res = n <= 1 ? 1 : factorial(n - 1);
+                resultBadge.innerText = res.toLocaleString('id-ID');
+                stepsDiv.innerHTML = `
+                    <p class="text-amber-600 font-bold">Permutasi Siklis</p>
+                    <p>Rumus: Pₛ = (n−1)!</p>
+                    <p>Substitusi: Pₛ = (${n}−1)! = ${n-1}!</p>
+                    <p>Jabaran: ${getFactorialExpansionStr(n-1)}</p>
+                    <p class="pt-2 text-emerald-600 font-bold">Hasil = ${res.toLocaleString('id-ID')}</p>`;
+            }
+        }
+
+        function getFactorialExpansionStr(num) {
+            if (num === 0 || num === 1) return "1";
+            let arr = [];
+            for (let i = num; i >= 1; i--) arr.push(i);
+            return arr.join(' × ');
+        }
+
+        // Bank soal variatif: Pilihan Ganda, MCMA, Benar/Salah, cerita, aplikasi, dan analisis.
+        // Field type digunakan oleh renderer kuis standar; typeKey/n/r/formulaStr/ans tetap
+        // dipertahankan agar mesin Guided Step-by-Step tetap kompatibel.
+        const questionTemplates = [
+            { typeKey:'permutation', gen:() => {
+                const n = 7 + Math.floor(Math.random()*4), ans = permutation(n,3);
+                return { typeKey:'permutation', kind:'single', category:'Soal cerita • aplikasi',
+                    text:`Panitia sekolah memiliki ${n} calon siswa. Tiga orang akan dipilih untuk menjadi Ketua, Sekretaris, dan Bendahara. Berapa banyak susunan pengurus yang mungkin?`, n, r:3,
+                    options:[String(ans), String(ans/2), String(ans+ n), String(combination(n,3))],
+                    formulaStr:`P(${n}, 3) = ${n}! / (${n} - 3)!`, ans,
+                    explanation:`Jabatan berbeda sehingga urutan/peran penting. P(${n},3) = ${n} × ${n-1} × ${n-2} = ${ans}.` };
+            }},
+            { typeKey:'combination', gen:() => {
+                const n = 10 + Math.floor(Math.random()*4), ans = combination(n,4);
+                return { typeKey:'combination', kind:'single', category:'Soal cerita • pemilihan tim',
+                    text:`Dari ${n} siswa akan dipilih 4 orang untuk menjadi satu tim lomba. Tidak ada posisi khusus dalam tim. Berapa banyak tim berbeda yang dapat dibentuk?`, n, r:4,
+                    options:[String(ans), String(permutation(n,4)), String(ans*2), String(combination(n,3))],
+                    formulaStr:`C(${n}, 4) = ${n}! / [4! × (${n} - 4)!]`, ans,
+                    explanation:`Karena hanya memilih anggota tanpa posisi, urutan tidak penting. C(${n},4) = ${ans}.` };
+            }},
+            { typeKey:'cyclic', gen:() => {
+                const n = 5 + Math.floor(Math.random()*4), ans = factorial(n-1);
+                return { typeKey:'cyclic', kind:'single', category:'Soal cerita • susunan melingkar',
+                    text:`Sebanyak ${n} anggota kelompok duduk mengelilingi meja bundar. Rotasi seluruh posisi dianggap susunan yang sama. Berapa banyak susunan duduk yang berbeda?`, n, r:n-1,
+                    options:[String(ans), String(factorial(n)), String(factorial(n-2)), String(ans*n)],
+                    formulaStr:`Pₛ = (${n} - 1)!`, ans,
+                    explanation:`Untuk susunan melingkar dengan rotasi dianggap sama, gunakan Pₛ = (n−1)! = ${n-1}! = ${ans}.` };
+            }},
+            { typeKey:'repeating', gen:() => {
+                const words=[['MATA',4,2],['KAKAK',5,3,3,2],['STATISTIK',9,3,3,2]];
+                const w=words[Math.floor(Math.random()*words.length)];
+                const counts=w.slice(2), n=w[1], ans=factorial(n)/counts.reduce((a,b)=>a*factorial(b),1);
+                return { typeKey:'repeating', kind:'single', category:'Analisis • unsur sama',
+                    text:`Berapa banyak susunan berbeda yang dapat dibuat dari semua huruf pada kata "${w[0]}"?`, n, r:counts[0],
+                    options:[String(ans), String(factorial(n)), String(ans*2), String(Math.max(1,ans/2))],
+                    formulaStr:`P = ${n}! / (${counts.map(x=>x+'!').join(' × ')})`, ans,
+                    explanation:`Ada huruf yang sama, sehingga susunan identik tidak boleh dihitung berulang. P = ${n}! / (${counts.map(x=>x+'!').join(' × ')}) = ${ans}.` };
+            }},
+            { typeKey:'probability', gen:() => {
+                const red=3+Math.floor(Math.random()*3), blue=4+Math.floor(Math.random()*3), total=red+blue;
+                return { typeKey:'probability', kind:'single', category:'Peluang • konteks nyata',
+                    text:`Kotak donasi berisi ${red} kupon merah dan ${blue} kupon biru. Satu kupon diambil secara acak. Berapa peluang memperoleh kupon merah?`, n:total, r:red,
+                    options:[`${red}/${total}`, `${blue}/${total}`, `${red}/${blue}`, `${total}/${red}`],
+                    formulaStr:`P(A) = n(A)/n(S) = ${red}/${total}`, ans:`${red}/${total}`,
+                    explanation:`Kejadian yang diinginkan berjumlah ${red}, sedangkan seluruh kupon berjumlah ${total}. Jadi P(A) = ${red}/${total}.` };
+            }},
+            { typeKey:'permutation', gen:() => {
+                const n=6, ans=permutation(n,4);
+                return { typeKey:'permutation', kind:'mcma', category:'MCMA • identifikasi konsep',
+                    text:`Pilih SEMUA pernyataan yang benar tentang ${n} objek berbeda yang akan dipilih dan disusun sebanyak 4 posisi.`, n, r:4,
+                    options:[
+                        {label:'Urutan penempatan objek memengaruhi hasil.', value:'a'},
+                        {label:'Model perhitungannya menggunakan P(6,4).', value:'b'},
+                        {label:'Hasilnya adalah 360 susunan.', value:'c'},
+                        {label:'Memilih A-B-C-D sama dengan D-C-B-A.', value:'d'}],
+                    correctValues:['a','b','c'], ans:ans,
+                    formulaStr:'P(6,4) = 6! / 2!', explanation:'Permutasi digunakan ketika urutan penting. P(6,4) = 6 × 5 × 4 × 3 = 360; pernyataan bahwa urutan tidak berpengaruh adalah keliru.' };
+            }},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'mcma', category:'MCMA • konsep dan aplikasi', n:8, r:2,
+                text:'Sebuah kelas memilih 2 siswa sebagai perwakilan tanpa membedakan jabatan. Pilih SEMUA pernyataan yang benar.',
+                options:[
+                    {label:'Urutan kedua siswa tidak memengaruhi kelompok.',value:'a'},
+                    {label:'Model perhitungannya menggunakan C(8,2).',value:'b'},
+                    {label:'Pasangan Andi–Budi berbeda dari Budi–Andi.',value:'c'},
+                    {label:'Jumlah pasangan yang mungkin adalah 28.',value:'d'}],
+                correctValues:['a','b','d'], ans:28, formulaStr:'C(8,2) = 8! / (2! × 6!)',
+                explanation:'Karena tidak ada jabatan, urutan tidak diperhatikan. C(8,2)=28; pasangan yang sama tidak menjadi dua hasil berbeda.'
+            })},
+            { typeKey:'probability', gen:() => ({
+                typeKey:'probability', kind:'truefalse', category:'Benar/Salah • pemahaman konsep', n:10, r:3,
+                text:'Sebuah kotak berisi 3 bola hijau dan 7 bola putih. Pernyataan: "Peluang mengambil bola hijau dalam satu pengambilan acak adalah 3/10." Benar atau Salah?',
+                correctValues:['true'], ans:'3/10', formulaStr:'P(A)=3/10',
+                explanation:'Benar, karena ada 3 hasil yang menguntungkan dari 10 bola seluruhnya.'
+            })},
+            { typeKey:'cyclic', gen:() => ({
+                typeKey:'cyclic', kind:'truefalse', category:'Benar/Salah • miskonsepsi', n:6, r:5,
+                text:'Enam orang duduk di meja bundar. Pernyataan: "Banyak susunan berbeda adalah 6!." Benar atau Salah?',
+                correctValues:['false'], ans:120, formulaStr:'Pₛ=(6−1)!=5!',
+                explanation:'Salah. Pada susunan melingkar, rotasi dianggap sama sehingga banyak susunan adalah (6−1)! = 120, bukan 6!.'
+            })},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'single', category:'Soal cerita • aplikasi kombinasi', n:7, r:3,
+                text:'Sebuah klub memiliki tepat 7 calon anggota: A, B, C, D, E, F, dan G. Tiga orang akan dipilih menjadi satu tim dokumentasi. Ketiga anggota memiliki tugas dan kedudukan yang setara, sehingga urutan pemilihan tidak diperhatikan. Berapa banyak pilihan tim yang berbeda?',
+                options:['21','35','42','210'], ans:35, formulaStr:'C(7,3)', explanation:'Tugas setara berarti hanya kelompok yang diperhatikan. C(7,3)=35.'
+            })},
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'Aplikasi • kode akses', n:8, r:4,
+                text:'Sebuah sistem menggunakan tepat 4 simbol berbeda dari 8 simbol yang tersedia. Setiap simbol hanya boleh dipakai sekali, dan posisi ke-1, ke-2, ke-3, dan ke-4 membentuk kode yang berbeda jika urutannya berbeda. Berapa banyak kode yang mungkin?',
+                options:['336','840','1680','4096'], ans:1680, formulaStr:'P(8,4)=8!/4!', explanation:'Kode membedakan urutan dan tidak mengizinkan pengulangan. P(8,4)=8×7×6×5=1680.'
+            })},
+            { typeKey:'repeating', gen:() => ({
+                typeKey:'repeating', kind:'mcma', category:'MCMA • analisis unsur sama', n:6, r:2,
+                text:'Sebuah susunan menggunakan huruf A, A, B, B, C, D. Pilih SEMUA pernyataan yang benar.',
+                options:[
+                    {label:'Ada 6 huruf yang disusun seluruhnya.',value:'a'},
+                    {label:'Dua A menyebabkan pengulangan 2! yang harus diperhitungkan.',value:'b'},
+                    {label:'Dua B juga menyebabkan pengulangan 2! yang harus diperhitungkan.',value:'c'},
+                    {label:'Jumlah susunan berbeda adalah 360.',value:'d'}],
+                correctValues:['a','b','c'], ans:180, formulaStr:'P = 6!/(2!×2!)',
+                explanation:'Ada 6 huruf dengan dua A dan dua B yang identik. Jadi P=6!/(2!×2!)=180; 360 belum menghilangkan kedua pengulangan.'
+            })},
+            { typeKey:'probability', gen:() => ({
+                typeKey:'probability', kind:'single', category:'Soal cerita • peluang', n:12, r:5,
+                text:'Dalam sebuah kotak terdapat tepat 12 kartu, terdiri atas 5 kartu bertanda "A" dan 7 kartu bertanda "B". Satu kartu diambil secara acak tanpa melihat isi kotak. Berapa peluang kartu yang terambil bertanda A?',
+                options:['5/12','7/12','5/7','1/12'], ans:'5/12', formulaStr:'P(A)=5/12', explanation:'Ada 5 kartu A dari total 12 kartu, sehingga peluangnya 5/12.'
+            })},
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'Analisis • membedakan konsep', n:5, r:3,
+                text:'Dari 5 siswa dipilih 3 orang untuk mengisi posisi Juara 1, Juara 2, dan Juara 3. Mengapa kombinasi tidak tepat digunakan?',
+                ans:'Karena posisi juara membedakan hasil', formulaStr:'P(5,3)',
+                options:['Karena hanya ada 3 siswa yang dipilih','Karena posisi juara membedakan hasil','Karena semua siswa harus dipilih','Karena urutan tidak pernah penting'],
+                explanation:'Juara 1, 2, dan 3 adalah posisi berbeda, sehingga susunan orang pada posisi tersebut menghasilkan hasil yang berbeda.'
+            })}
+,
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'C1 • Dasar • istilah', n:5, r:2,
+                text:'Manakah pernyataan yang tepat tentang permutasi? Permutasi digunakan ketika ...',
+                options:['urutan objek tidak diperhatikan','urutan objek diperhatikan','semua objek harus sama','peluang selalu sama dengan 1/2'], ans:'urutan objek diperhatikan',
+                formulaStr:'Permutasi: urutan/posisi diperhatikan.', explanation:'Permutasi digunakan ketika urutan atau posisi objek membedakan hasil.'
+            })},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'single', category:'C2 • Dasar • kombinasi', n:6, r:2,
+                text:'Dari 6 siswa dipilih 2 orang untuk menjadi anggota tim tanpa jabatan. Berapa banyak pasangan yang dapat dipilih?',
+                options:['12','15','30','36'], ans:'15', formulaStr:'C(6,2)=6!/(2!×4!)=15', explanation:'Karena tidak ada jabatan dan urutan tidak diperhatikan, gunakan kombinasi. C(6,2)=15.'
+            })},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'single', category:'C4 • Analisis • memilih metode', n:10, r:3,
+                text:'Sebuah panitia harus memilih 3 dari 10 siswa untuk mengikuti lomba. Ketiga siswa yang terpilih tidak memiliki jabatan berbeda. Metode yang tepat dan banyak pilihan yang dihasilkan adalah ...',
+                options:['P(10,3)=720','C(10,3)=120','P(10,7)=604800','C(10,7)=120'], ans:'C(10,3)=120',
+                formulaStr:'C(10,3)=10!/(3!×7!)=120', explanation:'Karena yang diperhatikan hanya siapa saja yang terpilih dan tidak ada posisi berbeda, gunakan kombinasi. Hasilnya 120 pilihan.'
+            })},
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'C3 • Aplikasi • susunan jabatan', n:9, r:3,
+                text:'Dari 9 calon pengurus akan dipilih Ketua, Wakil Ketua, dan Sekretaris. Satu orang hanya boleh menempati satu jabatan. Berapa banyak susunan pengurus yang mungkin?',
+                options:['84','504','729','216'], ans:'504', formulaStr:'P(9,3)=9×8×7=504', explanation:'Ketiga jabatan berbeda, sehingga urutan penempatan penting. P(9,3)=504.'
+            })},
+            { typeKey:'repeating', gen:() => ({
+                typeKey:'repeating', kind:'single', category:'C4 • Analisis • unsur sama', n:8, r:3,
+                text:'Berapa banyak susunan berbeda dari seluruh huruf pada kata "MATEMATIK" jika semua huruf digunakan?',
+                options:['5040','15120','45360','362880'], ans:'45360', formulaStr:'P=9!/(2!×2!×2!)=45360', explanation:'Kata MATEMATIK memiliki 9 huruf: M, A, dan T masing-masing muncul 2 kali; E, I, dan K masing-masing 1 kali. Jadi P=9!/(2!×2!×2!)=45360.'
+            })},
+            { typeKey:'cyclic', gen:() => ({
+                typeKey:'cyclic', kind:'single', category:'C4 • Analisis • susunan melingkar', n:7, r:6,
+                text:'Tujuh siswa duduk mengelilingi meja bundar. Jika dua susunan yang hanya berbeda karena meja diputar dianggap sama, berapa banyak susunan berbeda?',
+                options:['720','5040','840','120'], ans:'720', formulaStr:'Pₛ=(7−1)!=6!=720', explanation:'Karena rotasi meja tidak menghasilkan susunan baru, satu siswa dapat dianggap tetap. Jadi (7−1)!=720.'
+            })},
+            { typeKey:'probability', gen:() => ({
+                typeKey:'probability', kind:'single', category:'C4 • Analisis • peluang', n:20, r:8,
+                text:'Sebuah kotak berisi 20 kartu: 8 kartu bertanda A dan 12 kartu bertanda B. Satu kartu diambil secara acak. Peluang kartu yang terambil bertanda B adalah ...',
+                options:['2/5','3/5','8/20','12/28'], ans:'3/5', formulaStr:'P(B)=12/20=3/5', explanation:'Ada 12 kartu B dari 20 kartu seluruhnya. P(B)=12/20=3/5.'
+            })},
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'C5 • Evaluasi • pembatasan', n:7, r:4,
+                text:'Tujuh siswa A, B, C, D, E, F, G akan mengisi empat posisi berbeda: Ketua, Wakil, Sekretaris, dan Bendahara. Jika A wajib menjadi Ketua, berapa banyak susunan pengurus yang mungkin?',
+                options:['24','120','210','840'], ans:'120', formulaStr:'Setelah A tetap sebagai Ketua, P(6,3)=6×5×4=120', explanation:'A sudah menempati Ketua. Tiga jabatan tersisa diisi dari 6 siswa berbeda, sehingga P(6,3)=120.'
+            })},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'mcma', category:'C5 • Evaluasi • memilih strategi', n:12, r:4,
+                text:'Dari 12 siswa akan dipilih 4 orang sebagai satu tim tanpa jabatan. Pilih SEMUA pernyataan yang benar.',
+                options:[
+                    {label:'Urutan pemilihan tidak memengaruhi tim akhir.',value:'a'},
+                    {label:'Model yang tepat adalah C(12,4).',value:'b'},
+                    {label:'Banyak tim adalah 495.',value:'c'},
+                    {label:'Model P(12,4) lebih tepat karena urutan penting.',value:'d'}
+                ], correctValues:['a','b','c'], ans:495, formulaStr:'C(12,4)=12!/(4!×8!)=495', explanation:'Tidak ada jabatan sehingga urutan tidak penting. C(12,4)=495. Pernyataan d salah karena permutasi digunakan ketika urutan penting.'
+            })},
+            { typeKey:'repeating', gen:() => ({
+                typeKey:'repeating', kind:'mcma', category:'C4 • Analisis • frekuensi unsur', n:7, r:2,
+                text:'Kata "KOMODO" terdiri dari 6 huruf dengan O muncul 3 kali. Pilih SEMUA pernyataan yang benar tentang susunan semua hurufnya.',
+                options:[
+                    {label:'Jumlah seluruh huruf adalah 6.',value:'a'},
+                    {label:'Ada 3 huruf O yang identik.',value:'b'},
+                    {label:'Rumusnya 6!/3!.',value:'c'},
+                    {label:'Hasilnya 120 susunan berbeda.',value:'d'}
+                ], correctValues:['a','b','c','d'], ans:120, formulaStr:'P=6!/3!=120', explanation:'KOMODO memiliki 6 huruf; O muncul 3 kali. Maka P=6!/3!=120.'
+            })},
+            { typeKey:'cyclic', gen:() => ({
+                typeKey:'cyclic', kind:'truefalse', category:'C5 • Evaluasi • miskonsepsi', n:8, r:7,
+                text:'Delapan orang duduk mengelilingi meja bundar dan rotasi dianggap sama. Pernyataan: "Menukar posisi dua orang selalu menghasilkan susunan yang sama." Benar atau Salah?',
+                correctValues:['false'], ans:'Salah', formulaStr:'Pₛ=(8−1)!', explanation:'Salah. Rotasi seluruh meja dapat dianggap sama, tetapi pertukaran posisi dua orang umumnya mengubah susunan relatif mereka.'
+            })},
+            { typeKey:'probability', gen:() => ({
+                typeKey:'probability', kind:'truefalse', category:'C6 • Strategi • peluang', n:10, r:4,
+                text:'Sebuah kotak berisi 4 bola merah dan 6 bola putih. Pernyataan: "Jika satu bola diambil acak, peluang mendapat bola putih adalah 4/10 karena angka 4 berasal dari bola merah." Benar atau Salah?',
+                correctValues:['false'], ans:'Salah', formulaStr:'P(putih)=6/10=3/5', explanation:'Salah. Kejadian yang dicari adalah putih, sehingga pembilangnya 6. Peluangnya 6/10=3/5.'
+            })},
+            { typeKey:'permutation', gen:() => ({
+                typeKey:'permutation', kind:'single', category:'C6 • Strategi • kode', n:10, r:5,
+                text:'Sebuah kode terdiri dari 5 digit berbeda yang dipilih dari digit 0–9. Digit tidak boleh berulang dan digit pertama tidak boleh 0. Berapa banyak kode yang mungkin?',
+                options:['30240','27216','50400','90000'], ans:'27216', formulaStr:'Digit pertama: 9 pilihan; empat posisi berikutnya: 9×8×7×6. Jadi 9×9×8×7×6=27216.', explanation:'Posisi pertama memiliki 9 pilihan (1–9). Setelah itu tersisa 9 digit untuk posisi kedua, lalu 8, 7, dan 6. Total 27216.'
+            })},
+            { typeKey:'combination', gen:() => ({
+                typeKey:'combination', kind:'single', category:'C6 • Strategi • kombinasi bertahap', n:8, r:3,
+                text:'Dari 8 siswa akan dipilih 3 orang untuk sebuah tim. Syaratnya, minimal 1 siswa dari kelas X dan minimal 1 siswa dari kelas XI. Jika ada 5 siswa kelas X dan 3 siswa kelas XI, berapa banyak tim yang memenuhi syarat?',
+                options:['30','45','55','60'], ans:'45', formulaStr:'C(5,1)C(3,2)+C(5,2)C(3,1)=15+30=45', explanation:'Kemungkinan pembagian: 1 siswa dari X dan 2 dari XI = C(5,1)C(3,2)=15; atau 2 dari X dan 1 dari XI = C(5,2)C(3,1)=30. Total 45 tim.'
+            })}
+        ];
+
+        // Tingkat kesulitan/Cognitive Level untuk seluruh bank soal.
+        const difficultyMeta = {
+            C1:'Mengingat', C2:'Memahami', C3:'Menerapkan', C4:'Menganalisis', C5:'Mengevaluasi', C6:'Strategi/HOTS'
+        };
+        questionTemplates.forEach((t,i) => {
+            if (!t.difficulty) t.difficulty = (t.category || '').match(/C[1-6]/)?.[0] || ['C2','C3','C3','C2','C2','C3','C3','C2','C4','C3','C4','C3','C4','C4'][i] || 'C4';
+        });
+
+        // State for Standard Quiz
+        let stdQuizList = [];
+        let stdCurrentIdx = 0;
+        let stdTotalToPlay = 10;
+        let stdScore = 0;
+        let stdAnswered = false;
+
+        function startStandardQuiz() {
+            const countVal = parseInt(document.getElementById('stdQuestionCountSelect').value);
+            stdTotalToPlay = countVal;
+            stdCurrentIdx = 0;
+            stdScore = 0;
+            stdAnswered = false;
+            stdQuizList = [];
+            const selectedDifficulty = document.getElementById('stdDifficultySelect')?.value || 'all';
+            const pool = selectedDifficulty === 'all' ? questionTemplates : questionTemplates.filter(t => t.difficulty === selectedDifficulty);
+            const targetCount = countVal===999 ? 30 : countVal;
+            const used = new Set();
+            for (let i=0; i<targetCount; i++) {
+                let candidates = pool.filter((t,idx)=>!used.has(questionTemplates.indexOf(t)));
+                if (!candidates.length) { used.clear(); candidates = pool; }
+                const tmpl = candidates[Math.floor(Math.random()*candidates.length)];
+                used.add(questionTemplates.indexOf(tmpl));
+                const q = tmpl.gen();
+                q.difficulty = (q.category || '').match(/C[1-6]/)?.[0] || tmpl.difficulty;
+                q.levelName = difficultyMeta[tmpl.difficulty] || 'Latihan';
+                stdQuizList.push(q);
+            }
+            document.getElementById('stdQuizSetup').classList.add('hidden');
+            document.getElementById('stdQuizResult').classList.add('hidden');
+            document.getElementById('stdQuizActive').classList.remove('hidden');
+            renderStandardQuestion();
+        }
+
+        function renderStandardQuestion() {
+            const q=stdQuizList[stdCurrentIdx];
+            document.getElementById('stdProgressBadge').innerText=`Soal ${stdCurrentIdx+1} dari ${stdTotalToPlay===999?'∞':stdTotalToPlay}`;
+            document.getElementById('stdScoreDisplay').innerText=stdScore;
+            document.getElementById('stdQuizTitle').innerText=`${q.category || 'Latihan'} • ${q.kind==='mcma'?'MCMA':q.kind==='truefalse'?'Benar / Salah':'Pilihan Ganda'} • ${q.difficulty || ''} ${q.levelName ? '— '+q.levelName : ''}`;
+            document.getElementById('stdQuestionText').innerText=q.text;
+            const c=document.getElementById('stdOptionsContainer'); c.innerHTML='';
+            document.getElementById('stdExplanationBox').classList.add('hidden');
+            document.getElementById('stdNextBtn').classList.add('hidden');
+            stdAnswered=false;
+
+            if(q.kind==='mcma') {
+                q.options.forEach((o)=>{
+                    const label=document.createElement('label');
+                    label.className='w-full p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 text-left font-semibold text-sm transition bg-white flex items-center gap-3 cursor-pointer';
+                    label.innerHTML=`<input type="checkbox" value="${o.value}" class="w-5 h-5 accent-indigo-600"><span>${o.label}</span>`;
+                    c.appendChild(label);
+                });
+                const b=document.createElement('button'); b.className='md:col-span-2 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl'; b.innerText='Periksa Semua Jawaban'; b.onclick=()=>selectStandardMCMA(q); c.appendChild(b);
+            } else if(q.kind==='truefalse') {
+                ['true','false'].forEach(v=>{
+                    const b=document.createElement('button'); b.className='w-full p-5 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 text-center font-bold text-base bg-white';
+                    b.innerText=v==='true'?'Benar':'Salah'; b.onclick=()=>selectStandardTF(b,v,q); c.appendChild(b);
+                });
+            } else {
+                let opts=q.options || [];
+                if(!opts.length) {
+                    const correct=q.ans; opts=[String(correct)];
+                    while(opts.length<4) {
+                        let d;
+                        if(typeof correct==='number') d=Math.max(1,correct+((Math.floor(Math.random()*5)+1)*(Math.random()>.5?1:-1)));
+                        else d=`${Math.floor(Math.random()*8)+1}/${q.n}`;
+                        if(!opts.includes(String(d))) opts.push(String(d));
+                    }
+                } else if(opts.length<4) opts=opts.map(x=>typeof x==='string'?x:x.label);
+                opts=opts.map(x=>typeof x==='string'?x:x.label);
+                opts.sort(()=>Math.random()-.5);
+                opts.forEach(opt=>{
+                    const b=document.createElement('button'); b.className='w-full p-4 rounded-xl border border-slate-200 hover:border-indigo-500 hover:bg-indigo-50 text-left font-semibold text-sm transition bg-white flex items-center justify-between'; b.innerHTML=`<span>${opt}</span><i class="fa-regular fa-circle text-slate-300"></i>`; b.onclick=()=>selectStandardAnswer(b,opt,String(q.ans),q.explanation); c.appendChild(b);
+                });
+            }
+        }
+
+        function showStdFeedback(correct, html) {
+            const box=document.getElementById('stdExplanationBox'); box.classList.remove('hidden');
+            box.className=`p-5 rounded-xl text-xs space-y-2 border ${correct?'border-emerald-200 bg-emerald-50 text-emerald-900':'border-rose-200 bg-rose-50 text-rose-900'}`;
+            box.innerHTML=html;
+            document.getElementById('stdScoreDisplay').innerText=stdScore;
+            document.getElementById('stdNextBtn').classList.remove('hidden');
+        }
+
+        function selectStandardMCMA(q) {
+            if(stdAnswered)return;
+            const chosen=[...document.querySelectorAll('#stdOptionsContainer input[type="checkbox"]:checked')].map(x=>x.value).sort();
+            const expected=[...q.correctValues].sort();
+            const correct=chosen.length===expected.length && chosen.every((v,i)=>v===expected[i]);
+            stdAnswered=true; if(correct)stdScore+=10;
+            showStdFeedback(correct, `<p class="font-bold">${correct?'✓ Semua pilihan tepat! (+10 Poin)':'✕ Belum tepat.'}</p><p>${q.explanation}</p><p class="font-semibold">Pernyataan benar: ${q.options.filter(o=>expected.includes(o.value)).map(o=>o.label).join('; ')}</p>`);
+            document.querySelectorAll('#stdOptionsContainer input').forEach(x=>x.disabled=true);
+        }
+
+        function selectStandardTF(btn,selected,q) {
+            if(stdAnswered)return; const correct=q.correctValues[0]===selected; stdAnswered=true; if(correct)stdScore+=10;
+            btn.className=`w-full p-5 rounded-xl border-2 ${correct?'border-emerald-500 bg-emerald-50 text-emerald-800':'border-rose-500 bg-rose-50 text-rose-800'} text-center font-bold text-base`;
+            showStdFeedback(correct, `<p class="font-bold">${correct?'✓ Benar! (+10 Poin)':'✕ Jawaban belum tepat.'}</p><p>${q.explanation}</p>`);
+            document.querySelectorAll('#stdOptionsContainer button').forEach(x=>x.disabled=true);
+        }
+
+        function selectStandardAnswer(btn, selected, correct, explanation) {
+            if(stdAnswered)return; stdAnswered=true; const ok=selected===correct; if(ok)stdScore+=10;
+            btn.className=`w-full p-4 rounded-xl border-2 ${ok?'border-emerald-500 bg-emerald-50 text-emerald-800':'border-rose-500 bg-rose-50 text-rose-800'} text-left font-bold text-sm flex items-center justify-between`;
+            showStdFeedback(ok, `<p class="font-bold">${ok?'✓ Jawaban Benar! (+10 Poin)':'✕ Jawaban belum tepat.'}</p><p>${explanation}</p><p class="font-semibold">Jawaban: ${correct}</p>`);
+            document.querySelectorAll('#stdOptionsContainer button').forEach(b=>b.disabled=true);
+        }
+
+        function nextStandardQuestion() {
+            stdCurrentIdx++;
+            if(stdTotalToPlay!==999 && stdCurrentIdx>=stdTotalToPlay) {
+                document.getElementById('stdQuizActive').classList.add('hidden'); document.getElementById('stdQuizResult').classList.remove('hidden');
+                document.getElementById('resTotalQ').innerText=stdTotalToPlay; document.getElementById('resScore').innerText=stdScore;
+                if(typeof window.recordQuizCompletion==='function') window.recordQuizCompletion(stdScore);
+            } else renderStandardQuestion();
+        }
+
+        function resetStandardQuiz() { document.getElementById('stdQuizResult').classList.add('hidden'); document.getElementById('stdQuizSetup').classList.remove('hidden'); }
+
+        // State for Guided Quiz Engine
+        let guidedQuizList = [];
+        let guidedCurrentIdx = 0;
+        let guidedTotalToPlay = 10;
+        let guidedScore = 0;
+        let currentGuidedQ = null;
+
+        function startGuidedQuiz() {
+            const countVal = parseInt(document.getElementById('guidedQuestionCountSelect').value);
+            guidedTotalToPlay = countVal;
+            guidedCurrentIdx = 0;
+            guidedScore = 0;
+
+            guidedQuizList = [];
+            for (let i = 0; i < (countVal === 999 ? 30 : countVal); i++) {
+                const tmpl = questionTemplates[i % questionTemplates.length];
+                guidedQuizList.push(tmpl.gen());
+            }
+
+            document.getElementById('guidedQuizSetup').classList.add('hidden');
+            document.getElementById('guidedQuizResult').classList.add('hidden');
+            document.getElementById('guidedQuizActive').classList.remove('hidden');
+
+            renderGuidedQuestion();
+        }
+
+        function renderGuidedQuestion() {
+            currentGuidedQ = guidedQuizList[guidedCurrentIdx];
+            document.getElementById('guidedProgressBadge').innerText = `Soal Guided ${guidedCurrentIdx + 1} dari ${guidedTotalToPlay === 999 ? '∞' : guidedTotalToPlay}`;
+            document.getElementById('guidedScoreDisplay').innerText = `${guidedScore} Poin`;
+            document.getElementById('guidedQuestionText').innerText = currentGuidedQ.text;
+
+            // Reset All Steps
+            document.getElementById('guidedStep1Box').classList.remove('hidden');
+            document.getElementById('guidedStep1Btn').disabled = false;
+            document.getElementById('guidedStep1Feedback').classList.add('hidden');
+
+            document.getElementById('guidedStep2Box').classList.add('hidden');
+            document.getElementById('guidedStep2Btn').disabled = false;
+            document.getElementById('guidedStep2Feedback').classList.add('hidden');
+            document.getElementById('guidedStep2InputN').value = '';
+            document.getElementById('guidedStep2InputR').value = '';
+
+            document.getElementById('guidedStep3Box').classList.add('hidden');
+            document.getElementById('guidedStep3Btn').disabled = false;
+            document.getElementById('guidedStep3Feedback').classList.add('hidden');
+
+            document.getElementById('guidedStep4Box').classList.add('hidden');
+            document.getElementById('guidedStep4Btn').disabled = false;
+            document.getElementById('guidedStep4Feedback').classList.add('hidden');
+            document.getElementById('guidedStep4InputAns').value = '';
+
+            document.getElementById('guidedExplanationBox').classList.add('hidden');
+            document.getElementById('guidedNextBtn').classList.add('hidden');
+
+            // Render Step 1 Options
+            const step1OptContainer = document.getElementById('guidedStep1OptContainer');
+            step1OptContainer.innerHTML = `
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold">
+                    <input type="radio" name="step1Opt" value="permutation" class="accent-purple-600">
+                    <span>Permutasi (Urutan Mempengaruhi Hasil)</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold">
+                    <input type="radio" name="step1Opt" value="combination" class="accent-purple-600">
+                    <span>Kombinasi (Urutan Tidak Mempengaruhi Hasil)</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold">
+                    <input type="radio" name="step1Opt" value="cyclic" class="accent-purple-600">
+                    <span>Permutasi Siklis (Susunan Melingkar)</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold">
+                    <input type="radio" name="step1Opt" value="repeating" class="accent-purple-600">
+                    <span>Permutasi Unsur Sama (Huruf/Unsur Kembar)</span>
+                </label>
+                <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold">
+                    <input type="radio" name="step1Opt" value="probability" class="accent-purple-600">
+                    <span>Peluang Kejadian P(A) = n(A) / n(S)</span>
+                </label>
+            `;
+
+            // Adjust Labels for Step 2 based on type
+            if (currentGuidedQ.typeKey === 'probability') {
+                document.getElementById('guidedStep2LabelN').innerText = 'Nilai n(S) [Total Sampel]:';
+                document.getElementById('guidedStep2LabelR').innerText = 'Nilai n(A) [Jumlah Kejadian A]:';
+            } else {
+                document.getElementById('guidedStep2LabelN').innerText = 'Nilai n (Total Objek):';
+                document.getElementById('guidedStep2LabelR').innerText = 'Nilai r (Objek Dipilih):';
+            }
+        }
+
+        function checkGuidedStep1() {
+            const selected = document.querySelector('input[name="step1Opt"]:checked');
+            const fb = document.getElementById('guidedStep1Feedback');
+            fb.classList.remove('hidden');
+
+            if (!selected) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200';
+                fb.innerText = 'Silakan pilih salah satu konsep terlebih dahulu.';
+                return;
+            }
+
+            if (selected.value === currentGuidedQ.typeKey) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+                fb.innerText = '✓ Benar! Identifikasi konsep tepat (+25 Poin). Lanjut ke Tahap 2.';
+                document.getElementById('guidedStep1Btn').disabled = true;
+                guidedScore += 25;
+                document.getElementById('guidedScoreDisplay').innerText = `${guidedScore} Poin`;
+                document.getElementById('guidedStep2Box').classList.remove('hidden');
+            } else {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200';
+                fb.innerText = '✕ Kurang tepat. Perhatikan lagi apakah soal memperhatikan urutan, melingkar, atau berupa peluang.';
+            }
+        }
+
+        function checkGuidedStep2() {
+            const nVal = parseInt(document.getElementById('guidedStep2InputN').value);
+            const rVal = parseInt(document.getElementById('guidedStep2InputR').value);
+            const fb = document.getElementById('guidedStep2Feedback');
+            fb.classList.remove('hidden');
+
+            if (isNaN(nVal) || isNaN(rVal)) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200';
+                fb.innerText = 'Mohon isi kedua nilai variabel berupa angka.';
+                return;
+            }
+
+            if (nVal === currentGuidedQ.n && rVal === currentGuidedQ.r) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+                fb.innerText = '✓ Tepat sekali! Variabel yang ditentukan sudah benar (+25 Poin). Lanjut ke Tahap 3.';
+                document.getElementById('guidedStep2Btn').disabled = true;
+                guidedScore += 25;
+                document.getElementById('guidedScoreDisplay').innerText = `${guidedScore} Poin`;
+
+                // Setup Step 3 options dynamically
+                const step3Container = document.getElementById('guidedStep3OptContainer');
+                const correctFormula = currentGuidedQ.formulaStr;
+                let dummyFormula = `P(${currentGuidedQ.n + 1}, ${currentGuidedQ.r})`;
+                if (currentGuidedQ.typeKey === 'combination') dummyFormula = `C(${currentGuidedQ.n}, ${currentGuidedQ.r + 1})`;
+
+                let formOpts = [correctFormula, dummyFormula].sort(() => Math.random() - 0.5);
+
+                step3Container.innerHTML = '';
+                formOpts.forEach((f) => {
+                    step3Container.innerHTML += `
+                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer text-xs font-semibold font-mono">
+                            <input type="radio" name="step3Opt" value="${f}" class="accent-purple-600">
+                            <span>${f}</span>
+                        </label>
+                    `;
+                });
+
+                document.getElementById('guidedStep3Box').classList.remove('hidden');
+            } else {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200';
+                fb.innerText = `✕ Nilai variabel kurang tepat. Periksa kembali angka total dan pilihan dalam deskripsi soal.`;
+            }
+        }
+
+        function checkGuidedStep3() {
+            const selected = document.querySelector('input[name="step3Opt"]:checked');
+            const fb = document.getElementById('guidedStep3Feedback');
+            fb.classList.remove('hidden');
+
+            if (!selected) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200';
+                fb.innerText = 'Pilih salah satu susunan rumus.';
+                return;
+            }
+
+            if (selected.value === currentGuidedQ.formulaStr) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+                fb.innerText = '✓ Hebat! Formulasi rumus sangat tepat (+25 Poin). Lanjut ke Tahap 4 (Hitung Hasil).';
+                document.getElementById('guidedStep3Btn').disabled = true;
+                guidedScore += 25;
+                document.getElementById('guidedScoreDisplay').innerText = `${guidedScore} Poin`;
+                document.getElementById('guidedStep4Box').classList.remove('hidden');
+            } else {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200';
+                fb.innerText = '✕ Rumus yang dipilih kurang tepat. Cek kembali penyebut dan pembilang faktorialnya.';
+            }
+        }
+
+        function checkGuidedStep4() {
+            const ansInput = document.getElementById('guidedStep4InputAns').value.trim();
+            const fb = document.getElementById('guidedStep4Feedback');
+            fb.classList.remove('hidden');
+
+            if (!ansInput) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200';
+                fb.innerText = 'Masukkan hasil perhitungan angka atau pecahan kamu.';
+                return;
+            }
+
+            const expected = currentGuidedQ.ans.toString();
+            if (ansInput === expected) {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200';
+                fb.innerText = '🎉 Luar Biasa! Hasil perhitungan kamu BENAR (+25 Poin)!';
+                document.getElementById('guidedStep4Btn').disabled = true;
+                guidedScore += 25;
+                document.getElementById('guidedScoreDisplay').innerText = `${guidedScore} Poin`;
+
+                const expBox = document.getElementById('guidedExplanationBox');
+                expBox.classList.remove('hidden');
+                expBox.innerHTML = `<p class="font-bold text-indigo-700">Rangkuman Solusi Lengkap:</p><p>${currentGuidedQ.explanation}</p>`;
+
+                document.getElementById('guidedNextBtn').classList.remove('hidden');
+            } else {
+                fb.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200';
+                fb.innerText = `✕ Hasil perhitungan belum tepat. Hitung kembali nilai perkalian/pembagian faktorialnya.`;
+            }
+        }
+
+        function nextGuidedQuestion() {
+            guidedCurrentIdx++;
+            if (guidedTotalToPlay !== 999 && guidedCurrentIdx >= guidedTotalToPlay) {
+                document.getElementById('guidedQuizActive').classList.add('hidden');
+                document.getElementById('guidedQuizResult').classList.remove('hidden');
+                document.getElementById('resGuidedTotalQ').innerText = guidedTotalToPlay;
+                document.getElementById('resGuidedScore').innerText = guidedScore;
+
+                if (typeof window.recordQuizCompletion === 'function') {
+                    window.recordQuizCompletion(guidedScore);
+                }
+            } else {
+                renderGuidedQuestion();
+            }
+        }
+
+        function resetGuidedQuiz() {
+            document.getElementById('guidedQuizResult').classList.add('hidden');
+            document.getElementById('guidedQuizSetup').classList.remove('hidden');
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof updateCalculatorInputs === 'function') updateCalculatorInputs();
+        });
+    </script>
+</body>
+</html>
